@@ -10,7 +10,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.datetime_safe import datetime
 from django.template.defaultfilters import slugify
-
 # Create your models here.
 class Product(models.Model):
     product_id=models.UUIDField(primary_key=True, default=uuid.uuid4)
@@ -25,7 +24,7 @@ class Product(models.Model):
     ''' Every Cart has a relation to a Product  '''
 
     ''' Every Product must reference the Company that published it '''
-    #publisher = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='products', on_delete=models.CASCADE)
+    publisher = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='products', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -36,7 +35,7 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    #user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
